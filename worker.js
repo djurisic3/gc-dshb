@@ -4,12 +4,8 @@ const IORedis = require('ioredis');
 const { analyzeCode } = require('./jobs/analyze');
 
 // 🔌 Redis konekcija
-const connection = new IORedis({
-  host: '127.0.0.1', // ili 'localhost'
-  port: 6379,        // default port
-  maxRetriesPerRequest: null,
-  // password: 'ako si postavio', 
-});
+const connection = new IORedis
+  (process.env.REDIS_URL);
 
 const worker = new Worker(
   'analyze',

@@ -9,7 +9,7 @@ const Project = require('../models/Project');
 const { Queue } = require('bullmq');
 const IORedis = require('ioredis');
 
-const connection = new IORedis({ maxRetriesPerRequest: null });
+const connection = new IORedis(process.env.REDIS_URL);
 const analyzeQueue = new Queue('analyze', { connection });
 
 router.post('/analyze-url', async (req, res) => {
