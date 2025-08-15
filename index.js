@@ -24,7 +24,6 @@ app.use('/', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
 app.use('/', analysisRoutes);
 const PORT = process.env.PORT || 3000;
-const IORedis = require('ioredis');
 
 const { Queue } = require('bullmq');
 
