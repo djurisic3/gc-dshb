@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const connectDB = require('./db');
 const Project = require('./models/Project');
-const IORedis = require('ioredis');
 
 connectDB();
 
@@ -23,16 +22,12 @@ app.use('/', analyzeUrlRoute);
 app.use('/', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
 app.use('/', analysisRoutes);
-const PORT = process.env.PORT || 3000;
-
 const path = require('path');
 
-const { Queue } = require('bullmq');
+const PORT = process.env.PORT || 3000;
 
-const connection = new IORedis(process.env.REDIS_URL);
-connection.on('connect', () => console.log('Redis spojen'));
-connection.on('error', (err) => console.error('Redis error', err));
-const analyzeQueue = new Queue('analyze', {connection});
+const { Queue } = require('bullmq');
+const analyzeQueue = new Queue('analyze');
 
 app.post('/analyze/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });
@@ -48,12 +43,19 @@ app.post('/analyze/:name', async (req, res) => {
 });
 
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+const frontendBuildPath = path.resolve('./frontend/build');
 
-// Send all other requests to React app
+// Serve static files from React build
+app.use(express.static(frontendBuildPath));
+
+// Send all non-API requests to React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  // preskoči API rute
+  if (req.path.startsWith('/projects') || req.path.startsWith('/analyze')) {
+    return res.status(404).send('Not found');
+  }
+
+  res.sendFile(path.join(frontendBuildPath, 'index.html'));
 });
 
 app.get('/projects', async (req, res) => {
