@@ -22,8 +22,6 @@ app.use('/', analyzeUrlRoute);
 app.use('/', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
 app.use('/', analysisRoutes);
-const path = require('path');
-
 const PORT = process.env.PORT || 3000;
 
 const { Queue } = require('bullmq');
@@ -43,19 +41,8 @@ app.post('/analyze/:name', async (req, res) => {
 });
 
 
-const frontendBuildPath = path.resolve('./frontend/build');
-
-// Serve static files from React build
-app.use(express.static(frontendBuildPath));
-
-// Send all non-API requests to React app
-app.get('*', (req, res) => {
-  // preskoči API rute
-  if (req.path.startsWith('/projects') || req.path.startsWith('/analyze')) {
-    return res.status(404).send('Not found');
-  }
-
-  res.sendFile(path.join(frontendBuildPath, 'index.html'));
+app.get('/', (req, res) => {
+  res.send('Greencode Dashboard Backend radi!');
 });
 
 app.get('/projects', async (req, res) => {
@@ -117,4 +104,18 @@ function calculateGreenScore(repo) {
 
 app.listen(PORT, () => {
   console.log(`Server radi na portu ${PORT}`);
+});
+
+const path = require('path');
+
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+// Send all other requests to React app
+app.get('*', (req, res) => {
+  // preskoči API rute
+  if (req.path.startsWith('/projects') || req.path.startsWith('/analyze')) {
+    return res.status(404).send('Not found');
+  }
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
