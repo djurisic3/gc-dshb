@@ -9,6 +9,8 @@ console.log('REDIS URL worker :', process.env.REDIS_URL);
 const connection = new IORedis
   (process.env.REDIS_URL);
 
+  
+
 const worker = new Worker(
   'analyze',
   async job => {

@@ -10,7 +10,12 @@ const { Queue } = require('bullmq');
 const IORedis = require('ioredis');
 
 console.log('REDIS URL analyzeurl :', process.env.REDIS_URL);
+
 const connection = new IORedis(process.env.REDIS_URL);
+
+connection.on('connect', () => console.log('Redis spojen'));
+connection.on('error', (err) => console.error('Redis error', err));
+
 const analyzeQueue = new Queue('analyze', { connection });
 
 router.post('/analyze-url', async (req, res) => {

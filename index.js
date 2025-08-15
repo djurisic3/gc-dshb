@@ -28,6 +28,8 @@ const PORT = process.env.PORT || 3000;
 const { Queue } = require('bullmq');
 
 const connection = new IORedis(process.env.REDIS_URL);
+connection.on('connect', () => console.log('Redis spojen'));
+connection.on('error', (err) => console.error('Redis error', err));
 const analyzeQueue = new Queue('analyze', {connection});
 
 app.post('/analyze/:name', async (req, res) => {
