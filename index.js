@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const connectDB = require('./db');
 const Project = require('./models/Project');
+const IORedis = require('ioredis');
 
 connectDB();
 
@@ -23,9 +24,12 @@ app.use('/', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
 app.use('/', analysisRoutes);
 const PORT = process.env.PORT || 3000;
+const IORedis = require('ioredis');
 
 const { Queue } = require('bullmq');
-const analyzeQueue = new Queue('analyze');
+
+const connection = new IORedis(process.env.REDIS_URL);
+const analyzeQueue = new Queue('analyze', {connection});
 
 app.post('/analyze/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });

@@ -5,10 +5,11 @@ const path = require('path');
 const fs = require('fs');
 const { Queue } = require('bullmq');
 const Project = require('../models/Project');
+const IORedis = require('ioredis');
 
-const analyzeQueue = new Queue('analyze', {
-  connection: { maxRetriesPerRequest: null }
-});
+const connection = new IORedis(process.env.REDIS_URL);
+
+const analyzeQueue = new Queue('analyze', {connection});
 
 // POST /analyze-url — Kreira ili ažurira projekt i pokreće analizu
 router.post('/analyze-url', async (req, res) => {
