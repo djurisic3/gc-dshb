@@ -4,6 +4,8 @@ const IORedis = require('ioredis');
 const { analyzeCode } = require('./jobs/analyze');
 
 // 🔌 Redis konekcija
+console.log('REDIS URL worker :', process.env.REDIS_URL);
+
 const connection = new IORedis
   (process.env.REDIS_URL);
 
