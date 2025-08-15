@@ -25,6 +25,8 @@ const analysisRoutes = require('./routes/analyses');
 app.use('/', analysisRoutes);
 const PORT = process.env.PORT || 3000;
 
+const path = require('path');
+
 const { Queue } = require('bullmq');
 
 const connection = new IORedis(process.env.REDIS_URL);
@@ -46,8 +48,12 @@ app.post('/analyze/:name', async (req, res) => {
 });
 
 
-app.get('/', (req, res) => {
-  res.send('Greencode Dashboard Backend radi!');
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+// Send all other requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 app.get('/projects', async (req, res) => {
