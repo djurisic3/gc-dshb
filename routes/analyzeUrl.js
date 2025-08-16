@@ -9,7 +9,6 @@ const Project = require('../models/Project');
 const { Queue } = require('bullmq');
 const IORedis = require('ioredis');
 
-console.log('REDIS URL analyzeurl :', process.env.REDIS_URL);
 
 const connection = new IORedis(process.env.REDIS_URL);
 

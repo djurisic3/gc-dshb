@@ -17,13 +17,13 @@ const app = express();
 app.use(express.json()); // obavezno da možeš parsirati JSON body
 app.use(cors());
 const analyzeRouteUrlRoute = require('./routes/analyzeUrl');
-app.use('/', analyzeRouteUrlRoute);
+app.use('/api', analyzeRouteUrlRoute);
 const projectRoutes = require('./routes/projects');
 const analyzeUrlRoute = require('./jobs/analyze-url');
-app.use('/', analyzeUrlRoute);
-app.use('/', projectRoutes);
+app.use('/api', analyzeUrlRoute);
+app.use('/api', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
-app.use('/', analysisRoutes);
+app.use('/api', analysisRoutes);
 const PORT = process.env.PORT || 3000;
 
 const IORedis = require('ioredis');
@@ -33,17 +33,7 @@ const { Queue } = require('bullmq');
 const analyzeQueue = new Queue('analyze', {connection});
 
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
-
-console.log("before catch-all");
-// Sve ostale GET rute šalju index.html (React SPA)
-app.get('/*path', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-});
-
-
-app.post('/analyze/:name', async (req, res) => {
+app.post('/api/analyze/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });
   if (!repo) return res.status(404).send('Not found');
 
@@ -57,7 +47,7 @@ app.post('/analyze/:name', async (req, res) => {
 });
 
 
-app.get('/projects', async (req, res) => {
+app.get('/api/projects', async (req, res) => {
   try {
     const response = await axios.get(`https://api.github.com/users/${process.env.GITHUB_USERNAME}/repos`, {
       headers: {
@@ -118,6 +108,15 @@ app.listen(PORT, () => {
   console.log(`Server radi na portu ${PORT}`);
 });
 
+
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+console.log("before catch-all");
+// Sve ostale GET rute šalju index.html (React SPA)
+app.get('/*path', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
 
 const fs = require('fs');
 const indexPath = path.join(__dirname, 'frontend', 'build', 'index.html');
