@@ -116,7 +116,7 @@ app.get('/*path', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
-const fs = require('fs');
+/* const fs = require('fs');
 
 function walkDir(dir, filelist = []) {
   const files = fs.readdirSync(dir);
@@ -138,4 +138,4 @@ app.get('/debug/all-files', (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}); */
