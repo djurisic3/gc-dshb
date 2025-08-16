@@ -109,11 +109,11 @@ app.listen(PORT, () => {
   console.log(`Server radi na portu ${PORT}`);
 });
 
-/* const path = require('path');
+ const path = require('path');
 
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
-
+/*
 // Send all other requests to React app
 app.get('*', (req, res) => {
   // preskoči API rute
