@@ -11,6 +11,17 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 
+ const path = require('path');
+
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+console.log("before catch-all");
+// Sve ostale GET rute šalju index.html (React SPA)
+app.get('/*path', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 const app = express();
 app.use(express.json()); // obavezno da možeš parsirati JSON body
 app.use(cors());
@@ -105,16 +116,6 @@ app.listen(PORT, () => {
   console.log(`Server radi na portu ${PORT}`);
 });
 
- const path = require('path');
-
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
-
-console.log("before catch-all");
-// Sve ostale GET rute šalju index.html (React SPA)
-app.get('/*path', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-});
 
 const fs = require('fs');
 const indexPath = path.join(__dirname, 'frontend', 'build', 'index.html');
