@@ -113,13 +113,8 @@ app.listen(PORT, () => {
 
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
-/*
-// Send all other requests to React app
+
+// Sve ostale GET rute šalju index.html (React SPA)
 app.get('*', (req, res) => {
-  // preskoči API rute
-  if (req.path.startsWith('/projects') || req.path.startsWith('/analyze')) {
-    return res.status(404).send('Not found');
-  }
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
- */
