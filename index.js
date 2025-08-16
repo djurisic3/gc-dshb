@@ -106,9 +106,8 @@ app.listen(PORT, () => {
   console.log(`Server radi na portu ${PORT}`);
 });
 
-const path = require('path');
+/* const path = require('path');
 
-console.log("hello there: ", path.join(__dirname, 'frontend', 'build'));
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
@@ -120,3 +119,4 @@ app.get('*', (req, res) => {
   }
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
+ */
