@@ -108,7 +108,7 @@ app.listen(PORT, () => {
 
 const path = require('path');
 
-console.log("hello there: ", __dirname);
+console.log("hello there: ", path.join(__dirname, 'frontend', 'build'));
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
