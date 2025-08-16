@@ -44,10 +44,6 @@ app.post('/analyze/:name', async (req, res) => {
 });
 
 
-app.get('/', (req, res) => {
-  res.send('Greencode Dashboard Backend radi!');
-});
-
 app.get('/projects', async (req, res) => {
   try {
     const response = await axios.get(`https://api.github.com/users/${process.env.GITHUB_USERNAME}/repos`, {
@@ -114,7 +110,10 @@ app.listen(PORT, () => {
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
+console.log("before catch-all");
 // Sve ostale GET rute šalju index.html (React SPA)
 app.get('/*path', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
+
+console.log("after catch-all");
