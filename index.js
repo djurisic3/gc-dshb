@@ -24,8 +24,11 @@ const analysisRoutes = require('./routes/analyses');
 app.use('/', analysisRoutes);
 const PORT = process.env.PORT || 3000;
 
+const IORedis = require('ioredis');
+const connection = new IORedis(process.env.REDIS_URL);
+
 const { Queue } = require('bullmq');
-const analyzeQueue = new Queue('analyze');
+const analyzeQueue = new Queue('analyze', {connection});
 
 app.post('/analyze/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });
