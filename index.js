@@ -13,15 +13,6 @@ const cors = require('cors');
 
  const path = require('path');
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
-
-console.log("before catch-all");
-// Sve ostale GET rute šalju index.html (React SPA)
-app.get('/*path', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-});
-
 const app = express();
 app.use(express.json()); // obavezno da možeš parsirati JSON body
 app.use(cors());
@@ -40,6 +31,17 @@ const connection = new IORedis(process.env.REDIS_URL);
 
 const { Queue } = require('bullmq');
 const analyzeQueue = new Queue('analyze', {connection});
+
+
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+console.log("before catch-all");
+// Sve ostale GET rute šalju index.html (React SPA)
+app.get('/*path', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 
 app.post('/analyze/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });
