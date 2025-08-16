@@ -117,7 +117,6 @@ app.get('/*path', (req, res) => {
 });
 
 const fs = require('fs');
-const path = require('path');
 
 function walkDir(dir, filelist = []) {
   const files = fs.readdirSync(dir);
