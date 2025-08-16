@@ -17,7 +17,7 @@ connection.on('error', (err) => console.error('Redis error', err));
 
 const analyzeQueue = new Queue('analyze', { connection });
 
-router.post('/analyze-url', async (req, res) => {
+router.post('/api/analyze-url', async (req, res) => {
   const { url } = req.body;
   if (!url || !url.includes('github.com')) {
     return res.status(400).json({ error: 'Neispravan GitHub URL' });
