@@ -13,7 +13,7 @@ connection.on('error', (err) => console.error('Redis error', err));
 const analyzeQueue = new Queue('analyze', {connection});
 
 // POST /analyze-url — Kreira ili ažurira projekt i pokreće analizu
-router.post('/api/analyze-url', async (req, res) => {
+router.post('/', async (req, res) => {
   const { url } = req.body;
   if (!url || !url.includes('github.com')) {
     return res.status(400).json({ error: 'Neispravan GitHub URL' });
@@ -59,7 +59,7 @@ router.post('/api/analyze-url', async (req, res) => {
 });
 
 // POST /reanalyze — Ponovno pokreće analizu za postojeći projekt
-router.post('/reanalyze', async (req, res) => {
+router.post('/', async (req, res) => {
   const { repoUrl, projectId } = req.body;
 
   if (!repoUrl || !projectId) {
@@ -76,7 +76,7 @@ router.post('/reanalyze', async (req, res) => {
 });
 
 // GET /projects — Dohvaća sve projekte
-router.get('/api/projects', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const projects = await Project.find().sort({ updated_at: -1 });
     res.json(projects);
@@ -87,7 +87,7 @@ router.get('/api/projects', async (req, res) => {
 });
 
 // DELETE /projects/:id — Briše projekt iz baze
-router.delete('/api/projects/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await Project.findByIdAndDelete(id);

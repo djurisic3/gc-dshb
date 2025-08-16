@@ -3,7 +3,7 @@ const router = express.Router();
 const Analysis = require('../models/Analysis'); // napravi model ili iz worker-a izvezi
 
 // GET /analyses/:projectId - vrati sve analize za dati projectId
-router.get('/api/analyses/:projectId', async (req, res) => {
+router.get('/:projectId', async (req, res) => {
   try {
     const analyses = await Analysis.find({ project: req.params.projectId });
     res.json(analyses);
