@@ -115,6 +115,6 @@ app.listen(PORT, () => {
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
 // Sve ostale GET rute šalju index.html (React SPA)
-app.get('*', (req, res) => {
+app.get('/*path', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
