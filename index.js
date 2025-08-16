@@ -117,6 +117,26 @@ app.get('/*path', (req, res) => {
 });
 
 const fs = require('fs');
-const indexPath = path.join(__dirname, 'frontend', 'build', 'index.html');
-console.log('index.html exists?', fs.existsSync(indexPath));
-console.log("after catch-all");
+const path = require('path');
+
+function walkDir(dir, filelist = []) {
+  const files = fs.readdirSync(dir);
+  files.forEach(file => {
+    const filepath = path.join(dir, file);
+    if (fs.statSync(filepath).isDirectory()) {
+      walkDir(filepath, filelist);
+    } else {
+      filelist.push(filepath.replace(__dirname + '/', ''));
+    }
+  });
+  return filelist;
+}
+
+app.get('/debug/all-files', (req, res) => {
+  try {
+    const allFiles = walkDir(__dirname);
+    res.json(allFiles);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
