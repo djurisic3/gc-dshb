@@ -21,9 +21,9 @@ app.use('/api', analyzeRouteUrlRoute);
 const projectRoutes = require('./routes/projects');
 const analyzeUrlRoute = require('./jobs/analyze-url');
 app.use('/api', analyzeUrlRoute);
-app.use('/api', projectRoutes);
+app.use('/api/projects', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
-app.use('/api', analysisRoutes);
+app.use('/api/analyses', analysisRoutes);
 const PORT = process.env.PORT || 3000;
 
 const IORedis = require('ioredis');
@@ -47,7 +47,7 @@ app.post('/api/analyze/:name', async (req, res) => {
 });
 
 
-app.get('/api/projects', async (req, res) => {
+/* app.get('/api/projects', async (req, res) => {
   try {
     const response = await axios.get(`https://api.github.com/users/${process.env.GITHUB_USERNAME}/repos`, {
       headers: {
@@ -87,7 +87,7 @@ app.get('/api/projects', async (req, res) => {
 
     res.status(500).json({ error: 'Greška pri dohvatu GitHub projekata' });
   }
-});
+}); */
 
 function calculateGreenScore(repo) {
   let score = 100;
