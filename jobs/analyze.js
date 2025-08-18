@@ -10,14 +10,7 @@ const OpenAI = require('openai');
 
 const Project = require('../models/Project');
 
-const AnalysisSchema = new mongoose.Schema({
-  file: String,
-  score: Number,
-  issues: [String],
-  rawResult: String,
-  project: mongoose.Schema.Types.ObjectId,
-});
-const Analysis = mongoose.model('Analysis', AnalysisSchema);
+const Analysis = require('../models/Analysis');
 
 if (mongoose.connection.readyState === 0) {
   mongoose.connect(process.env.MONGO_URI, {
