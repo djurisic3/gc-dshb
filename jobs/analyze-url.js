@@ -13,7 +13,7 @@ connection.on('error', (err) => console.error('Redis error', err));
 const analyzeQueue = new Queue('analyze', {connection});
 
 // POST /analyze-url — Kreira ili ažurira projekt i pokreće analizu
-router.post('/', async (req, res) => {
+router.post('/analyze', async (req, res) => {
   const { url } = req.body;
   if (!url || !url.includes('github.com')) {
     return res.status(400).json({ error: 'Neispravan GitHub URL' });
@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
 });
 
 // POST /reanalyze — Ponovno pokreće analizu za postojeći projekt
-router.post('/', async (req, res) => {
+router.post('/reanalyze', async (req, res) => {
   const { repoUrl, projectId } = req.body;
 
   if (!repoUrl || !projectId) {
