@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json()); // obavezno da možeš parsirati JSON body
 app.use(cors());
 const analyzeRouteUrlRoute = require('./routes/analyzeUrl');
-app.use('/api/analyze-url', analyzeRouteUrlRoute);
+app.use('/api/analyze', analyzeRouteUrlRoute);
 const projectRoutes = require('./routes/projects');
 const analyzeUrlRoute = require('./jobs/analyze-url');
 app.use('/api/reanalyze', analyzeUrlRoute);
@@ -33,11 +33,11 @@ const { Queue } = require('bullmq');
 const analyzeQueue = new Queue('analyze', {connection});
 
 
-app.post('/api/analyze-url/:name', async (req, res) => {
+app.post('/api/analyze/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });
   if (!repo) return res.status(404).send('Not found');
 
-  analyzeQueue.add('run', {
+  analyzeQueue.add('analyze', {
     repoUrl: repo.url.replace('https://github.com/', 'https://github.com/').concat('.git'),
     projectId: repo._id,
     commitSha: repo.lastSha      // upiši ranije pri fetch-u

@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
     });
 
     // Pokreni worker job
-    await analyzeQueue.add('run', {
+    await analyzeQueue.add('analyze', {
       repoUrl: url,
       projectId: project._id,
       commitSha: repoData.pushed_at || ''

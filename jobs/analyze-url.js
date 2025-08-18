@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
       { upsert: true, new: true }
     );
 
-    await analyzeQueue.add('run', {
+    await analyzeQueue.add('analyze', {
       repoUrl: url,
       projectId: project._id,
     });
