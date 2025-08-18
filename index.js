@@ -110,7 +110,6 @@ app.listen(PORT, () => {
 // Serve static files from React build
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
-console.log("before catch-all");
 // Sve ostale GET rute šalju index.html (React SPA)
 app.get('/*path', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
@@ -118,5 +117,3 @@ app.get('/*path', (req, res) => {
 
 const fs = require('fs');
 const indexPath = path.join(__dirname, 'frontend', 'build', 'index.html');
-console.log('index.html exists?', fs.existsSync(indexPath));
-console.log("after catch-all");

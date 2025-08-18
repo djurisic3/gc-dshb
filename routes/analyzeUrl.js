@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
       projectId: project._id,
       commitSha: repoData.pushed_at || ''
     });
-
+    console.log("analiza je stvarno pokrenuta ", project);
     res.json({ message: '✅ Repo spremljen i analiza pokrenuta.', project });
   } catch (err) {
     console.error('❌ Greška u /analyze-url:', err.message);
