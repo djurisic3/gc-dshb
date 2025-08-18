@@ -22,12 +22,16 @@ router.post('/', async (req, res) => {
   const name = url.split('/').pop().replace('.git', '');
 
   try {
+    console.log("here");
     const tmpDir = path.join(__dirname, '..', 'tmp', Date.now().toString());
+    console.log("here2 ", tmpDir );
     await simpleGit().clone(url, tmpDir);
 
     // Jednostavna metrika
     const fileCount = fs.readdirSync(tmpDir).length;
     const greenScore = 100 - fileCount;
+
+    console.log("here3 ", greenScore);
 
     // Umjesto .create koristi upsert da izbjegnemo duplikate
     const project = await Project.findOneAndUpdate(

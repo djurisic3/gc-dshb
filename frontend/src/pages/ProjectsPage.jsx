@@ -45,7 +45,7 @@ export default function ProjectsPage() {
     if (!newRepoUrl) return;
 
     try {
-      const res = await fetch('/api/analyze-url', {
+      const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: newRepoUrl }),

@@ -16,11 +16,9 @@ const cors = require('cors');
 const app = express();
 app.use(express.json()); // obavezno da možeš parsirati JSON body
 app.use(cors());
-const analyzeRouteUrlRoute = require('./routes/analyzeUrl');
-app.use('/api/analyze', analyzeRouteUrlRoute);
 const projectRoutes = require('./routes/projects');
 const analyzeUrlRoute = require('./jobs/analyze-url');
-app.use('/api/reanalyze', analyzeUrlRoute);
+app.use('/api/analyze', analyzeUrlRoute);
 app.use('/api/projects', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
 app.use('/api/analyses', analysisRoutes);
