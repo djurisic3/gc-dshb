@@ -117,3 +117,26 @@ app.get('/*path', (req, res) => {
 
 const fs = require('fs');
 const indexPath = path.join(__dirname, 'frontend', 'build', 'index.html');
+
+// Pokretanje web servera
+app.listen(PORT, () => {
+  console.log(`Server radi na portu ${PORT}`);
+});
+
+// 👇 ovdje ubaci worker
+const { Worker } = require('bullmq');
+const { analyzeCode } = require('./jobs/analyze');
+
+const connection = new IORedis(process.env.REDIS_URL);
+
+const worker = new Worker(
+  'analyze',
+  async job => {
+    console.log('Pokrećem analizu za:', job.data.repoUrl);
+    await analyzeCode(job.data);
+  },
+  { connection }
+);
+
+worker.on('completed', job => console.log('✅ Job završio', job.id));
+worker.on('failed', (job, err) => console.error('❌ Job failed:', job.id, err));
