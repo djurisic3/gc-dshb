@@ -127,7 +127,6 @@ app.listen(PORT, () => {
 const { Worker } = require('bullmq');
 const { analyzeCode } = require('./jobs/analyze');
 
-const connection = new IORedis(process.env.REDIS_URL);
 
 const worker = new Worker(
   'analyze',
