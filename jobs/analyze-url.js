@@ -13,7 +13,7 @@ connection.on('error', (err) => console.error('Redis error', err));
 const analyzeQueue = new Queue('analyze', {connection});
 
 // POST /analyze-url — Kreira ili ažurira projekt i pokreće analizu
-router.post('/analyze', async (req, res) => {
+router.post('/', async (req, res) => {
   const { url } = req.body;
   if (!url || !url.includes('github.com')) {
     return res.status(400).json({ error: 'Neispravan GitHub URL' });
@@ -83,18 +83,6 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('❌ Greška kod dohvaćanja projekata:', err.message);
     res.status(500).json({ error: 'Greška pri dohvaćanju projekata' });
-  }
-});
-
-// DELETE /projects/:id — Briše projekt iz baze
-router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Project.findByIdAndDelete(id);
-    res.json({ message: '✅ Projekt obrisan.' });
-  } catch (err) {
-    console.error('❌ Greška pri brisanju:', err.message);
-    res.status(500).json({ error: 'Greška pri brisanju projekta.' });
   }
 });
 

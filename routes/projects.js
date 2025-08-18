@@ -51,4 +51,16 @@ router.post('/', async (req, res) => {
   }
 });
 
+// DELETE /projects/:id — Briše projekt iz baze
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Project.findByIdAndDelete(id);
+    res.json({ message: '✅ Projekt obrisan.' });
+  } catch (err) {
+    console.error('❌ Greška pri brisanju:', err.message);
+    res.status(500).json({ error: 'Greška pri brisanju projekta.' });
+  }
+});
+
 module.exports = router;
