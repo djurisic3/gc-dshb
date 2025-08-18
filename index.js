@@ -17,10 +17,10 @@ const app = express();
 app.use(express.json()); // obavezno da možeš parsirati JSON body
 app.use(cors());
 const analyzeRouteUrlRoute = require('./routes/analyzeUrl');
-app.use('/api', analyzeRouteUrlRoute);
+app.use('/api/reanalyze', analyzeRouteUrlRoute);
 const projectRoutes = require('./routes/projects');
 const analyzeUrlRoute = require('./jobs/analyze-url');
-app.use('/api', analyzeUrlRoute);
+app.use('/api/analyze-url', analyzeUrlRoute);
 app.use('/api/projects', projectRoutes);
 const analysisRoutes = require('./routes/analyses');
 app.use('/api/analyses', analysisRoutes);
@@ -47,7 +47,7 @@ app.post('/api/analyze/:name', async (req, res) => {
 });
 
 
-/* app.get('/api/projects', async (req, res) => {
+ app.get('/api/projects', async (req, res) => {
   try {
     const response = await axios.get(`https://api.github.com/users/${process.env.GITHUB_USERNAME}/repos`, {
       headers: {
@@ -87,7 +87,7 @@ app.post('/api/analyze/:name', async (req, res) => {
 
     res.status(500).json({ error: 'Greška pri dohvatu GitHub projekata' });
   }
-}); */
+});
 
 function calculateGreenScore(repo) {
   let score = 100;
