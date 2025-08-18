@@ -11,7 +11,7 @@ export default function ProjectsPage() {
   // 1. Dohvati postojeće projekte
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:3000/projects')
+    fetch('/api/projects')
       .then(res => res.json())
       .then(data => {
         setProjects(data);
@@ -26,7 +26,7 @@ export default function ProjectsPage() {
 
   const handleDelete = async (projectId) => {
   try {
-    const res = await fetch(`http://localhost:3000/projects/${projectId}`, {
+    const res = await fetch(`/api/projects/${projectId}`, {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error('Greška pri brisanju');
@@ -45,7 +45,7 @@ export default function ProjectsPage() {
     if (!newRepoUrl) return;
 
     try {
-      const res = await fetch('http://localhost:3000/analyze-url', {
+      const res = await fetch('/api/analyze-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: newRepoUrl }),
@@ -68,7 +68,7 @@ export default function ProjectsPage() {
 
 const handleReanalyze = async (proj) => {
   try {
-    const res = await fetch('http://localhost:3000/reanalyze', {
+    const res = await fetch('/api/reanalyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ repoUrl: proj.url, projectId: proj._id }),
