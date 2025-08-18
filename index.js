@@ -33,7 +33,7 @@ const { Queue } = require('bullmq');
 const analyzeQueue = new Queue('analyze', {connection});
 
 
-app.post('/api/analyze/:name', async (req, res) => {
+app.post('/api/analyze-url/:name', async (req, res) => {
   const repo = await Project.findOne({ name: req.params.name });
   if (!repo) return res.status(404).send('Not found');
 
