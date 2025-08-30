@@ -25,7 +25,12 @@ app.use('/api/analyses', analysisRoutes);
 const PORT = process.env.PORT || 3000;
 
 const IORedis = require('ioredis');
-const connection = new IORedis(process.env.REDIS_URL);
+const connection = new IORedis(process.env.REDIS_URL, {
+  maxRetriesPerRequest: null,
+  retryDelayOnFailover: 100,
+  enableReadyCheck: false,
+  maxRetriesPerCommand: 3,
+});
 
 const { Queue } = require('bullmq');
 const analyzeQueue = new Queue('analyze', {connection});
