@@ -7,7 +7,12 @@ const { Queue } = require('bullmq');
 const Project = require('../models/Project');
 const IORedis = require('ioredis');
 
-const connection = new IORedis(process.env.REDIS_URL);
+const connection = new IORedis(process.env.REDIS_URL, {
+  maxRetriesPerRequest: null,
+  retryDelayOnFailover: 100,
+  enableReadyCheck: false,
+  maxRetriesPerCommand: 3,
+});
 connection.on('connect', () => console.log('Redis spojen'));
 connection.on('error', (err) => console.error('Redis error', err));
 const analyzeQueue = new Queue('analyze', {connection});
